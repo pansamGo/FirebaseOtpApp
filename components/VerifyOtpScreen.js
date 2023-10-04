@@ -1,27 +1,31 @@
-import React, {useRef, useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
+import React, {useRef, useState, useContext} from "react";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileScreen from "./ProfileScreen";
-
+import AppContext from "./AppContext";
 
 
 const VerifyOtpScreen = ({ navigation }) => {
 
+    const myContext = useContext(AppContext);
+
     const [otp, setOtp] = useState('');
+    const [confirm, setConfirm] = useState(myContext.confirmObj);
 
     const checkOtp = (otp) => {
-        console.log('------otp----', otp)
         if(otp.length === 6) {
             setOtp(otp);
-            navigation.navigate('ProfileScreen');
+            confirmCode();
         }
     }
     
     async function confirmCode() {
         try {
-            await confirm.confirm(code);
+            await confirm.confirm(otp);
+            navigation.navigate('ProfileScreen');
         } catch (error) {
-            console.log('Invalid code.');
+            console.log('-----e-----', e);
+            Alert.alert('Invalid otp');
         }
     }
 
