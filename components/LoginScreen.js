@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppContext from "./AppContext";
 
 const LoginScreen = ({ navigation }) => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [confirm, setConfirm] = useState(null);
+    const myContext = useContext(AppContext);
 
     function onAuthStateChanged(user) {
         if (user) {}
@@ -22,16 +22,18 @@ const LoginScreen = ({ navigation }) => {
     
 
     // Handle the button press
-    async function signInWithPhoneNumber(phoneNumber) {
-        try{
-            const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-            await AsyncStorage.setItem('confirm', JSON.stringify(confirmation));
-            setConfirm(confirmation);
-            navigation.navigate('VerifyOtpScreen');
-            
-
-        }catch (e) {
-            console.log('----e---', e);
+    async function signInWithPhoneNumber(number) {
+        if (number.length === 10) {
+            number = '+91' + number;
+            try{
+                const confirmation = await auth().signInWithPhoneNumber(number);
+                myContext.setConfirmObject(confirmation);
+                navigation.navigate('VerifyOtpScreen');
+            }catch (e) {
+                console.log('----e---', e);
+            }
+        } else {
+            Alert.alert('Enter ten digit number');
         }
     }
 
@@ -59,8 +61,7 @@ const LoginScreen = ({ navigation }) => {
                 <TouchableOpacity 
                     style={styles.continueBtn}
                     onPress={() => {
-                        // signInWithPhoneNumber('+917973322959');
-                        navigation.navigate('VerifyOtpScreen');
+                        signInWithPhoneNumber(phoneNumber);
                     }} >
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
