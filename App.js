@@ -26,15 +26,22 @@ import AppContext from './components/AppContext';
 function App () {
 
   const [confirm, setConfirm] = useState(null);
+  const [userPhoneNumber, setUserPhoneNumber] = useState('');
+
 
   const setConfirmObject = (value) => {
     setConfirm(value);
   }
 
+  const setPhoneNumber = (number) => {
+    setUserPhoneNumber(number);
+  }
+
   const userSettings = {
     confirmObj: confirm,
-    setConfirm,
-    setConfirmObject
+    phoneNumber: userPhoneNumber,
+    setConfirmObject,
+    setPhoneNumber,
   }
 
   const Stack = createNativeStackNavigator();

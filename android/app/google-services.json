@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "899512495558",
+    "project_id": "otp-app-57046",
+    "storage_bucket": "otp-app-57046.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899512495558:android:bd613686a5a5705db816c7",
+        "android_client_info": {
+          "package_name": "com.loginotpapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNvbQ4gfmgBje0boiAx-1uczokRfBsyes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

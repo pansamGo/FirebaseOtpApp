@@ -2,6 +2,7 @@ import React, {useRef, useState, useContext} from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileScreen from "./ProfileScreen";
+import auth from '@react-native-firebase/auth';
 import AppContext from "./AppContext";
 
 
@@ -9,22 +10,25 @@ const VerifyOtpScreen = ({ navigation }) => {
 
     const myContext = useContext(AppContext);
 
-    const [otp, setOtp] = useState('');
+    const [code, setCode] = useState('');
     const [confirm, setConfirm] = useState(myContext.confirmObj);
+    const [verificationId, setVerificationId] = useState(myContext.confirmObj.verificationId);
 
-    const checkOtp = (otp) => {
+    const checkOtp = async (otp) => {
         if(otp.length === 6) {
-            setOtp(otp);
-            confirmCode();
+            confirmCode(otp);
         }
     }
+
+    const resendCode = () => {
+        
+    }
     
-    async function confirmCode() {
+    async function confirmCode(otp) {
         try {
             await confirm.confirm(otp);
             navigation.navigate('ProfileScreen');
         } catch (error) {
-            console.log('-----e-----', e);
             Alert.alert('Invalid otp');
         }
     }
@@ -42,7 +46,7 @@ const VerifyOtpScreen = ({ navigation }) => {
                 <View style={styles.otpInputView}>
                     <Text style={styles.text}>Please enter a six digit code sent to your mobile </Text>
                     <TextInput
-                        defaultValue={otp}
+                        defaultValue={code}
                         style={styles.otpInput}
                         maxLength={6}
                         onChangeText={(value) => checkOtp(value)}
@@ -51,7 +55,10 @@ const VerifyOtpScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.resendCodeView}>
                     <Text style={{color: '#43A45F'}}>I haven't received a code</Text>
-                    <TouchableOpacity style={styles.resendCodeBtn}>
+                    <TouchableOpacity onPress={() => {
+                                resendCode()
+                            }} 
+                            style={styles.resendCodeBtn}>
                         <Text style={{color: '#fff'}}>Resend Code</Text>
                     </TouchableOpacity>
                 </View>

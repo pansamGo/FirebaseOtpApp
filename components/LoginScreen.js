@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import auth from '@react-native-firebase/auth';
 import AppContext from "./AppContext";
 
+
+
 const LoginScreen = ({ navigation }) => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -15,8 +17,6 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        
-        console.log(auth().settings.forceRecaptchaFlowForTesting, '--------123--');
         return subscriber; // unsubscribe on unmount
     }, []);
     
@@ -28,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
             try{
                 const confirmation = await auth().signInWithPhoneNumber(number);
                 myContext.setConfirmObject(confirmation);
+                myContext.setPhoneNumber(number);
                 navigation.navigate('VerifyOtpScreen');
             }catch (e) {
                 console.log('----e---', e);
@@ -62,6 +63,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.continueBtn}
                     onPress={() => {
                         signInWithPhoneNumber(phoneNumber);
+                        // signInWithPhoneNumber('+44 7444 555666');
                     }} >
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
